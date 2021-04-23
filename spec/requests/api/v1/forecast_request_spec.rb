@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Forecast Search'do
   describe 'happy path' do
     it 'can return the forecast from a city and state search' do
-      VCR.use_cassette "current_weather_2" do
+      VCR.use_cassette "forecast" do
         get '/api/v1/forecast?location=denver,co'
         expect(response).to be_successful
         forecast = JSON.parse(response.body, symbolize_names:true)
@@ -43,6 +43,14 @@ RSpec.describe 'Forecast Search'do
         expect(current_weather[:icon]).to be_a String
 
 
+        expect(current_weather).to_not have_key(:dew_point)
+        expect(current_weather).to_not have_key(:wind_speed)
+        expect(current_weather).to_not have_key(:wind_deg)
+        expect(current_weather).to_not have_key(:wind_gust)
+        expect(current_weather).to_not have_key(:clouds)
+        expect(current_weather).to_not have_key(:pop)
+        expect(current_weather).to_not have_key(:rain)
+
         expect(forecast[:data][:attributes]).to have_key(:daily_weather)
 
         daily_weather = forecast[:data][:attributes][:daily_weather]
@@ -70,6 +78,21 @@ RSpec.describe 'Forecast Search'do
         expect(day).to have_key(:icon)
         expect(day[:icon]).to be_a String
 
+        expect(day).to_not have_key(:moonrise)
+        expect(day).to_not have_key(:moonset)
+        expect(day).to_not have_key(:feels_like)
+        expect(day).to_not have_key(:pressure)
+        expect(day).to_not have_key(:humidity)
+        expect(day).to_not have_key(:dew_point)
+        expect(day).to_not have_key(:visibility)
+        expect(day).to_not have_key(:wind_speed)
+        expect(day).to_not have_key(:wind_deg)
+        expect(day).to_not have_key(:wind_gust)
+        expect(day).to_not have_key(:clouds)
+        expect(day).to_not have_key(:pop)
+        expect(day).to_not have_key(:rain)
+        expect(day).to_not have_key(:uvi)
+
         expect(forecast[:data][:attributes]).to have_key(:hourly_weather)
         hourly_weather = forecast[:data][:attributes][:hourly_weather]
         expect(hourly_weather.count).to eq(8)
@@ -86,6 +109,19 @@ RSpec.describe 'Forecast Search'do
         expect(hour[:conditions]).to be_a String
         expect(hour).to have_key(:icon)
         expect(hour[:icon]).to be_a String
+
+        expect(hour).to_not have_key(:feels_like)
+        expect(hour).to_not have_key(:pressure)
+        expect(hour).to_not have_key(:humidity)
+        expect(hour).to_not have_key(:dew_point)
+        expect(hour).to_not have_key(:uvi)
+        expect(hour).to_not have_key(:clouds)
+        expect(hour).to_not have_key(:visibility)
+        expect(hour).to_not have_key(:wind_speed)
+        expect(hour).to_not have_key(:wind_deg)
+        expect(hour).to_not have_key(:wind_gust)
+        expect(hour).to_not have_key(:pop)
+
       end
     end
   end
