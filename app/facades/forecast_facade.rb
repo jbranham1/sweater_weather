@@ -7,45 +7,49 @@ class ForecastFacade
     return forecast = {} if forecast == {}
     OpenStruct.new({id: nil,
                     current_weather: get_current_weather(forecast[:current]),
-                    daily_weather:   {},
-                    hourly_weather:  {} })
+                    daily_weather:   get_daily_weather(forecast[:daily]),
+                    hourly_weather:  get_hourly_weather(forecast[:hourly]) })
   end
 
 
   def self.get_current_weather(current)
     {
-      datetime:     Time.at(current[:dt]).strftime("%F"),
-      sunrise:      Time.at(current[:sunrise]).to_datetime,
-      sunset:       Time.at(current[:sunset]).to_datetime,
+      datetime:     Time.at(current[:dt]).strftime("%F %T %z"),
+      sunrise:      Time.at(current[:sunrise]).strftime("%F %T %z"),
+      sunset:       Time.at(current[:sunset]).strftime("%F %T %z"),
       temperature:  current[:temp],
       feels_like:   current[:feels_like],
       humidity:     current[:humidity],
       uvi:          current[:uvi],
       visibility:   current[:visibility],
       conditions:   current[:weather].first[:description],
-      icon:         current[:weather].first[:description]
+      icon:         current[:weather].first[:icon]
     }
   end
 
 
-  def self.get_daily_weather(current)
-    # return current = {} if current == {}
-    # OpenStruct.new({ datetime: Time.at(current[:datetime]).to_datetime,
-    #                  sunrise:   current[:sunrise],
-    #                  sunset:  current[:sunset],
-    #                  temperature:  current[:temperature],
-    #                  feels_like:  current[:feels_like],
-    #                  humidity:  current[:humidity],
-    #                  uvi:  current[:uvi],
-    #                  visibility:  current[:visibility],
-    #                  conditions:  current[:conditions].first[:description],
-    #                  icon:  current[:icon].first[:description]})
+  def self.get_daily_weather(daily)
+    daily.map do |day|
+      {
+        date:        Time.at(day[:dt]).to_date,
+        sunrise:     Time.at(day[:sunrise]).strftime("%F %T %z"),
+        sunset:      Time.at(day[:sunset]).strftime("%F %T %z"),
+        max_temp:    day[:temp][:max],
+        min_temp:    day[:temp][:min],
+        conditions:  day[:weather].first[:description],
+        icon:        day[:weather].first[:icon]
+      }
+    end.first(5)
   end
 
-  def self.get_hourly_weather(current)
-    # return current = {} if current == {}
-    # OpenStruct.new({ current_weather: get_current_weather(forecast[:current]),
-    #                  daily_weather:   get_daily_weather(forecast[:daily]),
-    #                  hourly_weather:  get_hourly_weather(forecast[:hourly]) })
+  def self.get_hourly_weather(hourly)
+    hourly.map do |hour|
+      {
+        time:         Time.at(hour[:dt]).strftime("%T"),
+        temperature:  hour[:temp],
+        conditions:   hour[:weather].first[:description],
+        icon:         hour[:weather].first[:icon]
+      }
+    end.first(8)
   end
 end

@@ -3,7 +3,8 @@ class WeatherService
     params = {
       appid: ENV['OPENWEATHER_KEY'],
       lat: location[:lat],
-      lon: location[:lng]
+      lon: location[:lng],
+      units: 'imperial'
     }
     response = connection.get("onecall?") do |req|
       req.headers["CONTENT_TYPE"] = "application/json"
