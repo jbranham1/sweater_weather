@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.openweathermap.org/data/2.5/onecall?appid=4e7fabc59defa2194a6571b4cb68a4a3&lat&lon=-104.984853
+    uri: https://api.openweathermap.org/data/2.5/onecall?appid=openweather_key&lat&lon=-104.984853
     body:
       encoding: US-ASCII
       string: ''
@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - openresty
       Date:
-      - Fri, 23 Apr 2021 19:35:29 GMT
+      - Fri, 23 Apr 2021 21:40:27 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -41,5 +41,5 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"cod":"400","message":"Nothing to geocode"}'
-  recorded_at: Fri, 23 Apr 2021 19:35:30 GMT
+  recorded_at: Fri, 23 Apr 2021 21:40:27 GMT
 recorded_with: VCR 6.0.0

@@ -76,4 +76,6 @@ VCR.configure do |config|
   config.hook_into :webmock
   config.default_cassette_options = {re_record_interval: 7.days}
   # config.allow_http_connections_when_no_cassette = true
+  config.filter_sensitive_data('mapquest_Key') { ENV['MAPQUEST_KEY'] }
+  config.filter_sensitive_data('openweather_key') { ENV['OPENWEATHER_KEY'] }
 end
