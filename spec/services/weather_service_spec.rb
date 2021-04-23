@@ -113,4 +113,26 @@ RSpec.describe "Weather Search" do
       expect(hour_1[:weather].first[:icon]).to be_a String
     end
   end
+  describe "sad path" do
+    it "returns a 400 error if latitiude is not present" do
+      VCR.use_cassette("current_weather_no_latitude") do
+        location = {lng: -104.984853}
+        response = WeatherService.find_weather(location)
+        expect(response).to have_key(:cod)
+        expect(response[:cod]).to eq("400")
+        expect(response).to have_key(:message)
+        expect(response[:message]).to eq("Nothing to geocode")
+      end
+    end
+    it "returns a 400 error if longitude is not present" do
+      VCR.use_cassette("current_weather_no_longitude") do
+        location = {lat: -104.984853}
+        response = WeatherService.find_weather(location)
+        expect(response).to have_key(:cod)
+        expect(response[:cod]).to eq("400")
+        expect(response).to have_key(:message)
+        expect(response[:message]).to eq("Nothing to geocode")
+      end
+    end
+  end
 end
