@@ -21,8 +21,30 @@
           null,
           null
         ]
+      },
+      "/Users/jennybranham/Documents/GitHub/Turing/3mod/projects/sweater-weather/app/services/weather_service.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          1,
+          1,
+          null,
+          null
+        ]
       }
     },
-    "timestamp": 1619202192
+    "timestamp": 1619205909
   }
 }

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'Forecast Search'do
   describe 'happy path' do
-    it 'can return the forecast from a city and state search' do
+    xit 'can return the forecast from a city and state search' do
       get '/api/v1/forecast?location=denver,co'
       expect(response).to be_successful
       forecast = JSON.parse(response.body, symbolize_names:true)
