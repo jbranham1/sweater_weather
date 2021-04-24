@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Sessions Request' do
+RSpec.describe 'Users Request' do
   it "can create a new user" do
     user_params = {
       "email": "test@test.com",
@@ -9,7 +9,7 @@ RSpec.describe 'Sessions Request' do
     }
 
     headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
-    post "/api/v1/sessions", headers: headers, params: user_params.to_json
+    post "/api/v1/users", headers: headers, params: user_params.to_json
     created_user = User.last
 
     expect(response).to be_successful
@@ -42,7 +42,7 @@ RSpec.describe 'Sessions Request' do
       "password_confirmation": "password"
     }
     headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
-    post "/api/v1/sessions", headers: headers, params: user_params.to_json
+    post "/api/v1/users", headers: headers, params: user_params.to_json
 
     error = JSON.parse(response.body, symbolize_names:true)
     error_message = "Validation failed: Email is invalid"
@@ -58,7 +58,7 @@ RSpec.describe 'Sessions Request' do
       "password_confirmation": "password"
     }
     headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
-    post "/api/v1/sessions", headers: headers, params: user_params.to_json
+    post "/api/v1/users", headers: headers, params: user_params.to_json
 
     error = JSON.parse(response.body, symbolize_names:true)
     error_message = "Validation failed: Email can't be blank, Email is invalid"
@@ -74,7 +74,7 @@ RSpec.describe 'Sessions Request' do
     })
 
     headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
-    post "/api/v1/sessions", headers: headers, params: user_params.to_json
+    post "/api/v1/users", headers: headers, params: user_params.to_json
 
     error = JSON.parse(response.body, symbolize_names:true)
     error_message = "Validation failed: Password can't be blank"
@@ -92,7 +92,7 @@ RSpec.describe 'Sessions Request' do
     }
 
     headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
-    post "/api/v1/sessions", headers: headers, params: user_params.to_json
+    post "/api/v1/users", headers: headers, params: user_params.to_json
 
     error = JSON.parse(response.body, symbolize_names:true)
     error_message = "Validation failed: Password confirmation doesn't match Password"
@@ -110,9 +110,9 @@ RSpec.describe 'Sessions Request' do
     }
 
     headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
-    post "/api/v1/sessions", headers: headers, params: user_params.to_json
+    post "/api/v1/users", headers: headers, params: user_params.to_json
 
-    post "/api/v1/sessions", headers: headers, params: user_params.to_json
+    post "/api/v1/users", headers: headers, params: user_params.to_json
 
     error = JSON.parse(response.body, symbolize_names:true)
     error_message = "Validation failed: Email has already been taken"
