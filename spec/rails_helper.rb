@@ -78,4 +78,5 @@ VCR.configure do |config|
   # config.allow_http_connections_when_no_cassette = true
   config.filter_sensitive_data('mapquest_Key') { ENV['MAPQUEST_KEY'] }
   config.filter_sensitive_data('openweather_key') { ENV['OPENWEATHER_KEY'] }
+  config.filter_sensitive_data('unsplash_key') { ENV['UNSPLASH_KEY'] }
 end
