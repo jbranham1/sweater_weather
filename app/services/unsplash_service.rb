@@ -2,7 +2,7 @@ class UnsplashService
   def self.find_image(location)
     location_params = {
       client_id: ENV['UNSPLASH_KEY'],
-      query: location,
+      query: "#{location}",
       page: 1,
       per_page: 1
     }

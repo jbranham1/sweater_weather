@@ -47,7 +47,7 @@ RSpec.describe "Unsplash Search" do
       expect(results1[:user][:links]).to be_a Hash
 
       expect(results1[:user][:links]).to have_key(:self)
-      expect(results1[:user][:links][:self]).to be_a String
+      expect(results1[:user][:links][:html]).to be_a String
     end
   end
   describe "sad path" do

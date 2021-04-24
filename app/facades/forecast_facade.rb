@@ -5,7 +5,7 @@ class ForecastFacade
     forecast = WeatherService.find_weather(coords)
 
     return forecast = {} if forecast == {}
-    OpenStruct.new({id: nil,
+    OpenStruct.new({
                     current_weather: get_current_weather(forecast[:current]),
                     daily_weather:   get_daily_weather(forecast[:daily]),
                     hourly_weather:  get_hourly_weather(forecast[:hourly]) })
