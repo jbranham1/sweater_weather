@@ -121,4 +121,16 @@ RSpec.describe 'Users Request' do
     expect(error).to have_key(:error)
     expect(error[:error]).to eq("#{error_message}")
   end
+  
+  it "won't create a user with no request body" do
+      headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+      post "/api/v1/users", headers: headers
+
+      error = JSON.parse(response.body, symbolize_names:true)
+      error_message = "Must provide request body"
+
+      expect(response).to have_http_status(400)
+      expect(error).to have_key(:error)
+      expect(error[:error]).to eq("#{error_message}")
+  end
 end
