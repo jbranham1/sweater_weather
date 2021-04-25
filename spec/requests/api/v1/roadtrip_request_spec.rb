@@ -53,42 +53,132 @@ RSpec.describe 'Roadtrip Request' do
     end
   end
 
-  it "won't create a new roadtrip with no origin" do
-    VCR.use_cassette("roadtrip_no_origin") do
+  it "can create a new long roadtrip" do
+    VCR.use_cassette("long_roadtrip") do
       params = {
-        "destination": "Pueblo,CO",
+        "origin": "Seattle, WA",
+        "destination": "Key West, FL",
         "api_key": @user.api_key
       }
 
       headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
       post "/api/v1/road_trip", headers: headers, params: params, as: :json
 
-      error = JSON.parse(response.body, symbolize_names:true)
-      error_message = error[:error]
+      expect(response).to be_successful
 
-      expect(response).to have_http_status(:bad_request)
-      expect(error).to have_key(:error)
-      expect(error[:error]).to eq("#{error_message}")
+      expect(response.status).to eq(200)
+      trip = JSON.parse(response.body, symbolize_names: true)
+      expect(trip).to have_key(:data)
+      expect(trip[:data]).to be_a Hash
+
+      expect(trip[:data]).to have_key(:type)
+      expect(trip[:data][:type]).to eq("roadtrip")
+
+      expect(trip[:data]).to have_key(:id)
+      expect(trip[:data][:id]).to eq(nil)
+      expect(trip[:data]).to have_key(:attributes)
+      expect(trip[:data][:attributes]).to be_a Hash
+      attributes = trip[:data][:attributes]
+      expect(attributes.keys.count).to eq(4)
+      expect(attributes).to have_key(:start_city)
+      expect(attributes[:start_city]).to be_a String
+      expect(attributes).to have_key(:end_city)
+      expect(attributes[:end_city]).to be_a String
+      expect(attributes).to have_key(:travel_time)
+      expect(attributes[:travel_time]).to be_a String
+      expect(attributes).to have_key(:weather_at_eta)
+      expect(attributes[:weather_at_eta]).to be_a Hash
+      expect(attributes).to have_key(:start_city)
+      expect(attributes[:start_city]).to be_a String
+      expect(attributes).to have_key(:end_city)
+      expect(attributes[:end_city]).to be_a String
+      expect(attributes).to have_key(:start_city)
+      expect(attributes[:start_city]).to be_a String
+      expect(attributes[:weather_at_eta]).to have_key(:temperature)
+      expect(attributes[:weather_at_eta][:temperature]).to be_a Float
+      expect(attributes[:weather_at_eta]).to have_key(:conditions)
+      expect(attributes[:weather_at_eta][:conditions]).to be_a String
     end
+  end
+  it "won't create a new roadtrip with no api key" do
+    params = {
+      "origin": "Denver,CO",
+      "destination": "Pueblo,CO",
+    }
+
+    headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+    post "/api/v1/road_trip", headers: headers, params: params, as: :json
+
+    error = JSON.parse(response.body, symbolize_names:true)
+    error_message = "Must provide valid API key"
+
+    expect(response).to have_http_status(401)
+    expect(error).to have_key(:error)
+    expect(error[:error]).to eq("#{error_message}")
+  end
+
+  it "won't create a new roadtrip with no request body" do
+    headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+    post "/api/v1/road_trip", headers: headers
+
+    error = JSON.parse(response.body, symbolize_names:true)
+    error_message = "Must provide request body"
+
+    expect(response).to have_http_status(400)
+    expect(error).to have_key(:error)
+    expect(error[:error]).to eq("#{error_message}")
+  end
+
+  it "won't create a new roadtrip with invalid api key" do
+    params = {
+      "origin": "Denver,CO",
+      "destination": "Pueblo,CO",
+      "api_key": "sfskdfsodifsdf"
+    }
+
+    headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+    post "/api/v1/road_trip", headers: headers, params: params, as: :json
+
+    error = JSON.parse(response.body, symbolize_names:true)
+    error_message = "Must provide valid API key"
+
+    expect(response).to have_http_status(401)
+    expect(error).to have_key(:error)
+    expect(error[:error]).to eq("#{error_message}")
+  end
+
+  it "won't create a new roadtrip with no origin" do
+    params = {
+      "destination": "Pueblo,CO",
+      "api_key": @user.api_key
+    }
+
+    headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+    post "/api/v1/road_trip", headers: headers, params: params, as: :json
+
+    error = JSON.parse(response.body, symbolize_names:true)
+    error_message = "Must provide origin and destination"
+
+    expect(response).to have_http_status(:bad_request)
+    expect(error).to have_key(:error)
+    expect(error[:error]).to eq("#{error_message}")
   end
 
   it "won't create a new roadtrip with no destination" do
-    VCR.use_cassette("roadtrip_no_destination") do
-      params = {
-        "origin": "Pueblo,CO",
-        "api_key": @user.api_key
-      }
+    params = {
+      "origin": "Pueblo,CO",
+      "api_key": @user.api_key
+    }
 
-      headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
-      post "/api/v1/road_trip", headers: headers, params: params, as: :json
+    headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+    post "/api/v1/road_trip", headers: headers, params: params, as: :json
 
-      error = JSON.parse(response.body, symbolize_names:true)
-      error_message = error[:error]
+    error = JSON.parse(response.body, symbolize_names:true)
+    error_message = "Must provide origin and destination"
 
-      expect(response).to have_http_status(:bad_request)
-      expect(error).to have_key(:error)
-      expect(error[:error]).to eq("#{error_message}")
-    end
+    expect(response).to have_http_status(:bad_request)
+    expect(error).to have_key(:error)
+    expect(error[:error]).to eq("#{error_message}")
   end
 
   it "won't create a new roadtrip with an overseas trip" do
@@ -124,7 +214,7 @@ RSpec.describe 'Roadtrip Request' do
       expect(attributes[:end_city]).to be_a String
       expect(attributes).to have_key(:travel_time)
       expect(attributes[:travel_time]).to be_a String
-      expect(attributes[:travel_time]).to eq("impossible")
+      expect(attributes[:travel_time]).to eq("impossible route")
       expect(attributes).to have_key(:weather_at_eta)
       expect(attributes[:weather_at_eta]).to be_a Hash
       expect(attributes[:weather_at_eta].empty?).to be true
