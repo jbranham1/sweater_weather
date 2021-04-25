@@ -1,7 +1,7 @@
 class ImageFacade
   def self.get_image(location)
     image = UnsplashService.find_image(location)
-    return image = {} if image == {}
+    return image if image == {}
     OpenStruct.new({
                     location: location.titleize,
                     image_url: image[:results].first[:urls][:regular],

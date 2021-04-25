@@ -59,21 +59,21 @@ http_interactions:
       Accept-Ranges:
       - bytes
       Date:
-      - Sat, 24 Apr 2021 16:54:11 GMT
+      - Sun, 25 Apr 2021 14:30:55 GMT
       Age:
-      - '0'
+      - '77804'
       X-Served-By:
-      - cache-dca17733-DCA, cache-dfw18626-DFW
+      - cache-dca17733-DCA, cache-dfw18680-DFW
       X-Cache:
-      - MISS, MISS
+      - MISS, HIT
       X-Cache-Hits:
-      - 0, 0
+      - 0, 1
       X-Timer:
-      - S1619283252.901242,VS0,VE70
+      - S1619361056.600866,VS0,VE1
       Vary:
       - Accept-Encoding, Origin,Authorization,client-geo-region
     body:
       encoding: ASCII-8BIT
       string: '{"total":0,"total_pages":0,"results":[]}'
-  recorded_at: Sat, 24 Apr 2021 16:54:11 GMT
+  recorded_at: Sun, 25 Apr 2021 14:30:55 GMT
 recorded_with: VCR 6.0.0
