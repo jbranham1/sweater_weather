@@ -69,6 +69,9 @@ RSpec.describe Salaries do
       expect(salary1).to have_key(:max)
       expect(salary1[:max]).to be_a String
       expect(salary1[:max]).to eq("$#{@jobs[:salaries].first[:salary_percentiles][:percentile_75].round(2)}")
+
+      salary3 = salaries[2]
+      expect(salary3).to eq(nil)
     end
   end
   describe "get_salary_information" do
