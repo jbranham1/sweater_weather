@@ -13,26 +13,13 @@ class Forecast
 
   def get_daily_weather(daily)
     daily.map do |day|
-      {
-        date:        Time.at(day[:dt]).to_date,
-        sunrise:     Time.at(day[:sunrise]).strftime("%F %T %z"),
-        sunset:      Time.at(day[:sunset]).strftime("%F %T %z"),
-        max_temp:    day[:temp][:max],
-        min_temp:    day[:temp][:min],
-        conditions:  day[:weather].first[:description],
-        icon:        day[:weather].first[:icon]
-      }
+      DailyWeather.new(day)
     end.first(5)
   end
 
   def get_hourly_weather(hourly)
     hourly.map do |hour|
-      {
-        time:         Time.at(hour[:dt]).strftime("%T"),
-        temperature:  hour[:temp],
-        conditions:   hour[:weather].first[:description],
-        icon:         hour[:weather].first[:icon]
-      }
+      HourlyWeather.new(hour)
     end.first(8)
   end
 end

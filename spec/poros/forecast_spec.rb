@@ -56,83 +56,53 @@ RSpec.describe Forecast do
     expect(@forecast).to be_a Forecast
     expect(@forecast.id).to eq(nil)
     expect(@forecast.current_weather).to be_a CurrentWeather
-    expect(@forecast.daily_weather).to be_an Array
-    expect(@forecast.hourly_weather).to be_an Array
-
+    expect(@forecast.daily_weather.first).to be_an DailyWeather
+    expect(@forecast.hourly_weather.first).to be_an HourlyWeather
   end
+  describe 'get_current_weather' do
+    it 'can return the current weather from a city and state search' do
+      current_weather = @forecast.current_weather
 
+      expect(current_weather).to be_a CurrentWeather
+      expect(DateTime.parse(current_weather.datetime)).to be_a DateTime
+      expect(current_weather.sunrise).to be_a String
+      expect(DateTime.parse(current_weather.sunrise)).to be_a DateTime
+      expect(current_weather.sunset).to be_a String
+      expect(DateTime.parse(current_weather.sunset)).to be_a DateTime
+      expect(current_weather.temperature).to be_a Float
+      expect(current_weather.feels_like).to be_a Float
+      expect(current_weather.humidity).to be_a Numeric
+      expect(current_weather.uvi).to be_a Numeric
+      expect(current_weather.visibility).to be_a Numeric
+      expect(current_weather.conditions).to be_a String
+      expect(current_weather.icon).to be_a String
+    end
+  end
 
   describe 'get_daily_weather' do
     it 'can return the daily weather from a city and state search' do
-      daily_weather = @forecast.get_daily_weather(@attrs[:daily])
+      daily_weather = @forecast.get_daily_weather(@attrs[:daily]).first
 
-      day = daily_weather.first
-      expect(day).to be_a Hash
-      expect(day.keys.count).to eq (7)
-
-      expect(day).to have_key(:date)
-      expect(day[:date]).to be_a Date
-      expect(day).to have_key(:sunrise)
-      expect(day[:sunrise]).to be_a String
-      expect(DateTime.parse(day[:sunrise])).to be_a DateTime
-      expect(day).to have_key(:sunset)
-      expect(day[:sunset]).to be_a String
-      expect(DateTime.parse(day[:sunset])).to be_a DateTime
-      expect(day).to have_key(:max_temp)
-      expect(day[:max_temp]).to be_a Float
-      expect(day).to have_key(:min_temp)
-      expect(day[:min_temp]).to be_a Float
-      expect(day).to have_key(:conditions)
-      expect(day[:conditions]).to be_a String
-      expect(day).to have_key(:icon)
-      expect(day[:icon]).to be_a String
-
-      expect(day).to_not have_key(:moonrise)
-      expect(day).to_not have_key(:moonset)
-      expect(day).to_not have_key(:feels_like)
-      expect(day).to_not have_key(:pressure)
-      expect(day).to_not have_key(:humidity)
-      expect(day).to_not have_key(:dew_point)
-      expect(day).to_not have_key(:visibility)
-      expect(day).to_not have_key(:wind_speed)
-      expect(day).to_not have_key(:wind_deg)
-      expect(day).to_not have_key(:wind_gust)
-      expect(day).to_not have_key(:clouds)
-      expect(day).to_not have_key(:pop)
-      expect(day).to_not have_key(:rain)
-      expect(day).to_not have_key(:uvi)
+      expect(daily_weather).to be_a DailyWeather
+      expect(daily_weather.date).to be_a Date
+      expect(daily_weather.sunrise).to be_a String
+      expect(DateTime.parse(daily_weather.sunrise)).to be_a DateTime
+      expect(daily_weather.sunset).to be_a String
+      expect(DateTime.parse(daily_weather.sunset)).to be_a DateTime
+      expect(daily_weather.max_temp).to be_a Float
+      expect(daily_weather.min_temp).to be_a Float
+      expect(daily_weather.conditions).to be_a String
+      expect(daily_weather.icon).to be_a String
     end
   end
   describe 'get_hourly_weather' do
     it 'can return the hourly weather from a city and state search' do
-      hourly_weather = @forecast.get_hourly_weather(@attrs[:hourly])
-      expect(hourly_weather).to be_an Array
-      expect(hourly_weather.count).to eq(2)
-
-      hour = hourly_weather.first
-      expect(hour).to be_a Hash
-      expect(hour.keys.count).to eq (4)
-
-      expect(hour).to have_key(:time)
-      expect(hour[:time]).to be_a String
-      expect(Time.parse(hour[:time])).to be_a Time
-      expect(hour).to have_key(:temperature)
-      expect(hour[:temperature]).to be_a Float
-      expect(hour[:conditions]).to be_a String
-      expect(hour).to have_key(:icon)
-      expect(hour[:icon]).to be_a String
-
-      expect(hour).to_not have_key(:feels_like)
-      expect(hour).to_not have_key(:pressure)
-      expect(hour).to_not have_key(:humidity)
-      expect(hour).to_not have_key(:dew_point)
-      expect(hour).to_not have_key(:uvi)
-      expect(hour).to_not have_key(:clouds)
-      expect(hour).to_not have_key(:visibility)
-      expect(hour).to_not have_key(:wind_speed)
-      expect(hour).to_not have_key(:wind_deg)
-      expect(hour).to_not have_key(:wind_gust)
-      expect(hour).to_not have_key(:pop)
+      hourly_weather = @forecast.get_hourly_weather(@attrs[:hourly]).first
+      expect(hourly_weather).to be_a HourlyWeather
+      expect(DateTime.parse(hourly_weather.time)).to be_a DateTime
+      expect(hourly_weather.temperature).to be_a Float
+      expect(hourly_weather.conditions).to be_a String
+      expect(hourly_weather.icon).to be_a String
     end
   end
 end

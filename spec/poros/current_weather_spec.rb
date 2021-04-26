@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Forecast do
+RSpec.describe CurrentWeather do
   before :each do
     @attrs = {
       :dt=>1619390990,
