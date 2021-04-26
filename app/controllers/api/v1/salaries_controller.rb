@@ -1,7 +1,6 @@
 class Api::V1::SalariesController < ApplicationController
   def index
-    salaries = Salaries.new(params[:destination])
-
+    salaries = SalariesFacade.get_salaries(params[:destination])
     render json: SalariesSerializer.new(salaries)
   end
 end

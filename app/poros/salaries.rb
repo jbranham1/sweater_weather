@@ -1,28 +1,28 @@
 class Salaries
   attr_reader :id,
-              :destination
+              :destination,
+              :forecast,
+              :salaries
 
-  def initialize(destination)
+  def initialize(salaries, forecast,destination)
     @id = nil
     @destination = destination.titleize
+    @forecast = get_forecast(forecast)
+    @salaries = get_salaries(salaries)
   end
 
-  def forecast
-    coords = MapquestService.find_coordinal_location(@destination)
-    coords = coords[:results].first[:locations].first[:latLng]
-    forecast = WeatherService.find_weather(coords)
+  def get_forecast(forecast)
     {
       summary: forecast[:current][:weather].first[:description],
       temperature: "#{forecast[:current][:temp]} F"
     }
   end
 
-  def salaries
-    sal = TeleportService.find_salaries(@destination.downcase)
+  def get_salaries(salaries)
     job_titles = ["Data Analyst","Data Scientist","Mobile Developer",
             "QA Engineer","Software Engineer","Systems Administrator","Web Developer"]
     job_titles.map do |job_title|
-      job = sal[:salaries].find { |job| job[:job][:title] == job_title}
+      job = salaries[:salaries].find { |job| job[:job][:title] == job_title}
       get_salary(job) if job
     end
   end
