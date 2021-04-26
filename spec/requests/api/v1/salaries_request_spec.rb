@@ -27,7 +27,7 @@ RSpec.describe 'Salaries Search'do
       expect(forecast).to have_key(:summary)
       expect(forecast[:summary]).to be_a String
       expect(forecast).to have_key(:temperature)
-      expect(temperature[:forecast]).to be_a String
+      expect(forecast[:temperature]).to be_a String
 
       expect(data).to have_key(:salaries)
       expect(data[:salaries]).to be_an Array
