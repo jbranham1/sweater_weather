@@ -6,26 +6,11 @@ class Forecast
 
   def initialize(data)
     @id = nil
-    @current_weather = get_current_weather(data[:current])
+    @current_weather = CurrentWeather.new(data[:current])
     @daily_weather = get_daily_weather(data[:daily])
     @hourly_weather = get_hourly_weather(data[:hourly])
   end
 
-  def get_current_weather(current)
-    {
-      datetime:     Time.at(current[:dt]).strftime("%F %T %z"),
-      sunrise:      Time.at(current[:sunrise]).strftime("%F %T %z"),
-      sunset:       Time.at(current[:sunset]).strftime("%F %T %z"),
-      temperature:  current[:temp],
-      feels_like:   current[:feels_like],
-      humidity:     current[:humidity],
-      uvi:          current[:uvi],
-      visibility:   current[:visibility],
-      conditions:   current[:weather].first[:description],
-      icon:         current[:weather].first[:icon]
-    }
-  end
-  
   def get_daily_weather(daily)
     daily.map do |day|
       {
