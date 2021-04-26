@@ -29,8 +29,8 @@ RSpec.describe Salaries do
     expect(@salaries.forecast).to have_key(:temperature)
     expect(@salaries.forecast[:temperature]).to be_a String
     expect(@salaries.forecast[:temperature]).to eq("#{@forecast[:current][:temp]} F")
-    expect(@salaries.salaries).to be_an Array
 
+    expect(@salaries.salaries).to be_an Array
     salary1 = @salaries.salaries.first
     expect(salary1).to have_key(:title)
     expect(salary1[:title]).to be_a String
@@ -42,7 +42,47 @@ RSpec.describe Salaries do
     expect(salary1[:max]).to be_a String
     expect(salary1[:max]).to eq("$#{@jobs[:salaries].first[:salary_percentiles][:percentile_75].round(2)}")
   end
-  describe "forecast" do
 
+  describe "get_forecast" do
+    it "returns summary and temperature of forecast" do
+      forecast = @salaries.get_forecast(@forecast)
+      expect(forecast).to be_a Hash
+      expect(forecast).to have_key(:summary)
+      expect(forecast[:summary]).to be_a String
+      expect(forecast[:summary]).to eq(@forecast[:current][:weather].first[:description])
+      expect(forecast).to have_key(:temperature)
+      expect(forecast[:temperature]).to be_a String
+      expect(forecast[:temperature]).to eq("#{@forecast[:current][:temp]} F")
+    end
+  end
+  describe "get_salaries" do
+    it "returns summary and temperature of forecast" do
+      salaries = @salaries.get_salaries(@jobs)
+      expect(salaries).to be_an Array
+      salary1 = salaries.first
+      expect(salary1).to have_key(:title)
+      expect(salary1[:title]).to be_a String
+      expect(salary1[:title]).to eq(@jobs[:salaries].first[:job][:title])
+      expect(salary1).to have_key(:min)
+      expect(salary1[:min]).to be_a String
+      expect(salary1[:min]).to eq("$#{@jobs[:salaries].first[:salary_percentiles][:percentile_25].round(2)}")
+      expect(salary1).to have_key(:max)
+      expect(salary1[:max]).to be_a String
+      expect(salary1[:max]).to eq("$#{@jobs[:salaries].first[:salary_percentiles][:percentile_75].round(2)}")
+    end
+  end
+  describe "get_salary_information" do
+    it "returns summary and temperature of forecast" do
+      job = @salaries.get_salary_information(@jobs[:salaries].first)
+      expect(job).to have_key(:title)
+      expect(job[:title]).to be_a String
+      expect(job[:title]).to eq(@jobs[:salaries].first[:job][:title])
+      expect(job).to have_key(:min)
+      expect(job[:min]).to be_a String
+      expect(job[:min]).to eq("$#{@jobs[:salaries].first[:salary_percentiles][:percentile_25].round(2)}")
+      expect(job).to have_key(:max)
+      expect(job[:max]).to be_a String
+      expect(job[:max]).to eq("$#{@jobs[:salaries].first[:salary_percentiles][:percentile_75].round(2)}")
+    end
   end
 end

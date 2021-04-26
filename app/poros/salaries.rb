@@ -21,13 +21,14 @@ class Salaries
   def get_salaries(salaries)
     job_titles = ["Data Analyst","Data Scientist","Mobile Developer",
             "QA Engineer","Software Engineer","Systems Administrator","Web Developer"]
+            
     job_titles.map do |job_title|
       job = salaries[:salaries].find { |job| job[:job][:title] == job_title}
-      get_salary(job) if job
+      get_salary_information(job) if job
     end
   end
 
-  def get_salary(job)
+  def get_salary_information(job)
     {
       title: job[:job][:title],
       min: "$#{job[:salary_percentiles][:percentile_25].round(2)}",
