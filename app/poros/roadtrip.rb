@@ -26,8 +26,9 @@ class Roadtrip
       arrival_forecast = forecast[:hourly].find {|h| h[:dt] == arrival_time.to_i }
       temp = arrival_forecast[:temp]
     else
+
       arrival_date = alter_date(trip[:route][:formattedTime], false)
-      arrival_forecast = forecast[:daily].find {|h| h[:dt] == arrival_date.to_i }
+      arrival_forecast = forecast[:daily].find {|h| Time.at(h[:dt]).to_date == arrival_date.to_date }
       temp = arrival_forecast[:temp][:day]
     end
     {
@@ -42,7 +43,7 @@ class Roadtrip
     if hourly
       DateTime.new(date.year, date.month, date.day, date.hour,0,0,"-5:00")
     else
-      DateTime.new(date.year, date.month, date.day, 12,0,0,"-5:00")
+      DateTime.new(date.year, date.month, date.day, 0,0,0,"-5:00")
     end
   end
 end

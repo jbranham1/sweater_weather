@@ -77,12 +77,12 @@ RSpec.describe Roadtrip do
                 lng: -104.98761,
                 lat: 39.738453}
               },
-            formattedTime: "40:44:22",
+            formattedTime: "49:44:22",
             locations: [{
-              adminArea5: "Denver",
+              adminArea5: "Seattle",
               postalCode: "",
               adminArea1: "US",
-              adminArea3: "CO",
+              adminArea3: "WA",
               street: "",
             },
             {
@@ -109,14 +109,14 @@ RSpec.describe Roadtrip do
       VCR.use_cassette("weather_for_roadtrip") do
         trip = Roadtrip.new(@attrs)
         date = @attrs[:route][:formattedTime]
-        expect(trip.alter_date(date)).to eq("Mon, 26 Apr 2021 10:00:00 -0500")
+        expect(trip.alter_date(date)).to be_a DateTime
       end
     end
     it "gets date  for arrival" do
       VCR.use_cassette("weather_for_roadtrip") do
         trip = Roadtrip.new(@attrs)
         date = @attrs[:route][:formattedTime]
-        expect(trip.alter_date(date,false)).to eq("Mon, 26 Apr 2021 12:00:00 -0500")
+        expect(trip.alter_date(date,false)).to be_a DateTime
       end
     end
   end
