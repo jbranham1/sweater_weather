@@ -12,8 +12,12 @@ RSpec.describe HourlyWeather do
  it "exists" do
     expect(@hourly_weather).to be_a HourlyWeather
     expect(DateTime.parse(@hourly_weather.time)).to be_a DateTime
+    expect(@hourly_weather.time).to eq (Time.at(@attrs[:dt]).strftime("%T"))
     expect(@hourly_weather.temperature).to be_a Float
+    expect(@hourly_weather.temperature).to eq (@attrs[:temp])
     expect(@hourly_weather.conditions).to be_a String
+    expect(@hourly_weather.conditions).to eq (@attrs[:weather].first[:description])
     expect(@hourly_weather.icon).to be_a String
+    expect(@hourly_weather.icon).to eq (@attrs[:weather].first[:icon])
   end
 end
