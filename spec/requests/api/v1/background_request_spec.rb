@@ -46,4 +46,35 @@ RSpec.describe 'Background Search'do
       end
     end
   end
+  describe "sad path" do
+    it "Won't return background with missing location" do
+      params = ({
+      })
+
+      headers = {"CONTENT_TYPE" => "application/json"}
+      get "/api/v1/background", headers: headers, params: params
+
+      error = JSON.parse(response.body, symbolize_names:true)
+      error_message = "Must provide location"
+
+      expect(response).to have_http_status(:bad_request)
+      expect(error).to have_key(:error)
+      expect(error[:error]).to eq("#{error_message}")
+      end
+    it "Won't return background with empty location" do
+      params = ({
+       destination: ""
+      })
+
+      headers = {"CONTENT_TYPE" => "application/json"}
+      get "/api/v1/background", headers: headers, params: params
+
+      error = JSON.parse(response.body, symbolize_names:true)
+      error_message = "Must provide location"
+
+      expect(response).to have_http_status(:bad_request)
+      expect(error).to have_key(:error)
+      expect(error[:error]).to eq("#{error_message}")
+    end
+  end
 end
