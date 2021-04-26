@@ -23,7 +23,7 @@ class Salaries
             "QA Engineer","Software Engineer","Systems Administrator","Web Developer"]
     job_titles.map do |job_title|
       job = sal[:salaries].find { |job| job[:job][:title] == job_title}
-      get_salary(job)
+      get_salary(job) if job
     end
   end
 
