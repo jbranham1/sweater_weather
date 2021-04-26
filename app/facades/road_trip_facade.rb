@@ -1,6 +1,7 @@
 class RoadTripFacade
   def self.get_route(origin, destination)
     trip = MapquestService.find_directions(origin, destination)
+
     if trip[:info][:messages].blank?
       Roadtrip.new(trip)
     else

@@ -14,7 +14,7 @@ class Roadtrip
   end
 
   def get_address(location)
-    "#{location[:street]} #{location[:adminArea5]}, #{location[:adminArea3]} #{location[:postalCode]}"
+    "#{location[:street]} #{location[:adminArea5]}, #{location[:adminArea3]} #{location[:postalCode]}".strip()
   end
 
   def get_weather(trip)
