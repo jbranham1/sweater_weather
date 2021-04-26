@@ -5,19 +5,24 @@ class Roadtrip
               :travel_time,
               :weather_at_eta
 
-  def initialize(data)
+  def initialize(data, origin, destination)
     @id = nil
-    @start_city = get_address(data[:route][:locations].first)
-    @end_city = get_address(data[:route][:locations].last)
-    @travel_time = data[:route][:formattedTime]
+    @start_city = origin.titleize
+    @end_city = destination.titleize
+    @travel_time = get_travel_time(data)
     @weather_at_eta = get_weather(data)
   end
 
-  def get_address(location)
-    "#{location[:street]} #{location[:adminArea5]}, #{location[:adminArea3]} #{location[:postalCode]}".strip()
+  def get_travel_time(data)
+    if data[:info][:messages].blank?
+      data[:route][:formattedTime]
+    else
+      "impossible route"
+    end
   end
 
   def get_weather(trip)
+    return {} if !trip[:info][:messages].blank?
     forecast = WeatherService.find_weather(trip[:route][:boundingBox][:lr])
     time_split = trip[:route][:formattedTime].split(":")
 
