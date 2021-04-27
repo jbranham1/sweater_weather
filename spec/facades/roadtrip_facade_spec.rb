@@ -16,7 +16,7 @@ RSpec.describe 'Roadtrip Facade'do
         expect(trip.weather_at_eta).to be_a Hash
 
         expect(trip.weather_at_eta).to have_key(:temperature)
-        expect(trip.weather_at_eta[:temperature]).to be_a Float
+        expect(trip.weather_at_eta[:temperature]).to be_a Numeric
         expect(trip.weather_at_eta).to have_key(:conditions)
         expect(trip.weather_at_eta[:conditions]).to be_a String
       end
@@ -51,9 +51,43 @@ RSpec.describe 'Roadtrip Facade'do
         expect(trip.weather_at_eta).to be_a Hash
 
         expect(trip.weather_at_eta).to have_key(:temperature)
-        expect(trip.weather_at_eta[:temperature]).to be_a Float
+        expect(trip.weather_at_eta[:temperature]).to be_a Numeric
         expect(trip.weather_at_eta).to have_key(:conditions)
         expect(trip.weather_at_eta[:conditions]).to be_a String
+      end
+    end
+    describe "sad path" do
+      it "won't return a roadtrip if the origin is empty" do
+        VCR.use_cassette "roadtrip_empty_origin" do
+          origin = ""
+          destination = "Key West, FL"
+
+          trip = RoadTripFacade.get_route(origin, destination)
+
+          expect(trip).to be_a(Roadtrip)
+          expect(trip.start_city).to be_a String
+          expect(trip.end_city).to be_a String
+          expect(trip.travel_time).to be_a String
+          expect(trip.travel_time).to eq("impossible route")
+          expect(trip.weather_at_eta).to be_a Hash
+          expect(trip.weather_at_eta.empty?).to be true
+        end
+      end
+      it "won't return a roadtrip if the destination is empty" do
+        VCR.use_cassette "roadtrip_empty_destination" do
+          origin = "Key West, FL"
+          destination = ""
+
+          trip = RoadTripFacade.get_route(origin, destination)
+
+          expect(trip).to be_a(Roadtrip)
+          expect(trip.start_city).to be_a String
+          expect(trip.end_city).to be_a String
+          expect(trip.travel_time).to be_a String
+          expect(trip.travel_time).to eq("impossible route")
+          expect(trip.weather_at_eta).to be_a Hash
+          expect(trip.weather_at_eta.empty?).to be true
+        end
       end
     end
   end

@@ -32,7 +32,6 @@ RSpec.describe "Unsplash Search" do
       expect(results1).to have_key(:description)
       expect(results1[:description]).to be_a String
       expect(results1).to have_key(:alt_description)
-      expect(results1[:alt_description]).to be_a String
       expect(results1).to have_key(:urls)
       expect(results1[:urls]).to be_a Hash
       expect(results1[:urls]).to have_key(:regular)

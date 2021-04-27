@@ -47,7 +47,7 @@ RSpec.describe 'Roadtrip Request' do
       expect(attributes).to have_key(:start_city)
       expect(attributes[:start_city]).to be_a String
       expect(attributes[:weather_at_eta]).to have_key(:temperature)
-      expect(attributes[:weather_at_eta][:temperature]).to be_a Float
+      expect(attributes[:weather_at_eta][:temperature]).to be_a Numeric
       expect(attributes[:weather_at_eta]).to have_key(:conditions)
       expect(attributes[:weather_at_eta][:conditions]).to be_a String
     end
@@ -95,7 +95,7 @@ RSpec.describe 'Roadtrip Request' do
       expect(attributes).to have_key(:start_city)
       expect(attributes[:start_city]).to be_a String
       expect(attributes[:weather_at_eta]).to have_key(:temperature)
-      expect(attributes[:weather_at_eta][:temperature]).to be_a Float
+      expect(attributes[:weather_at_eta][:temperature]).to be_a Numeric
       expect(attributes[:weather_at_eta]).to have_key(:conditions)
       expect(attributes[:weather_at_eta][:conditions]).to be_a String
     end
