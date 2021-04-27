@@ -21,5 +21,14 @@ RSpec.describe 'Image Facade'do
         expect(image.credit[:author_profile]).to be_a String
       end
     end
+    it "cant' return an image if there is no location" do
+      VCR.use_cassette "background_no_location" do
+        location = ""
+        image = ImageFacade.get_image(location)
+
+        expect(image).to be_a(Hash)
+        expect(image.empty?).to be true
+      end
+    end
   end
 end

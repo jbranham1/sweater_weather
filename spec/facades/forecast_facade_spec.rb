@@ -8,9 +8,9 @@ RSpec.describe 'Forecast Facade'do
         forecast = ForecastFacade.get_forecast(location)
 
         expect(forecast).to be_a(Forecast)
-         expect(forecast.current_weather).to be_a CurrentWeather
-         expect(forecast.daily_weather.first).to be_an DailyWeather
-         expect(forecast.hourly_weather.first).to be_an HourlyWeather
+        expect(forecast.current_weather).to be_a CurrentWeather
+        expect(forecast.daily_weather.first).to be_an DailyWeather
+        expect(forecast.hourly_weather.first).to be_an HourlyWeather
 
         current_weather = forecast.current_weather
         expect(DateTime.parse(current_weather.datetime)).to be_a DateTime
@@ -55,7 +55,14 @@ RSpec.describe 'Forecast Facade'do
         expect(hour.temperature).to be_a Float
         expect(hour.conditions).to be_a String
         expect(hour.icon).to be_a String
-
+      end
+    end
+    it "can't return a forcast if the location is empty" do
+      VCR.use_cassette "forecast_empty_location" do
+        location = ""
+        forecast = ForecastFacade.get_forecast(location)
+        expect(forecast).to be_a(Hash)
+        expect(forecast.empty?).to be true
       end
     end
   end
