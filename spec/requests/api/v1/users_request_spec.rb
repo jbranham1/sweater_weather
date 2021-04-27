@@ -70,7 +70,8 @@ RSpec.describe 'Users Request' do
 
   it "Won't create a new user with missing password" do
     user_params = ({
-      "email": "whatever@example.com"
+      "email": "whatever@example.com",
+      "password_confirmation": "test"
     })
 
     headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
@@ -78,6 +79,23 @@ RSpec.describe 'Users Request' do
 
     error = JSON.parse(response.body, symbolize_names:true)
     error_message = "Validation failed: Password can't be blank"
+
+    expect(response).to have_http_status(:bad_request)
+    expect(error).to have_key(:error)
+    expect(error[:error]).to eq("#{error_message}")
+  end
+
+  it "Won't create a new user with missing password confirmation" do
+    user_params = ({
+      "email": "whatever@example.com",
+      "password": "test"
+    })
+
+    headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
+    post "/api/v1/users", headers: headers, params: user_params.to_json
+
+    error = JSON.parse(response.body, symbolize_names:true)
+    error_message = "Must provide password confirmation"
 
     expect(response).to have_http_status(:bad_request)
     expect(error).to have_key(:error)
@@ -121,7 +139,7 @@ RSpec.describe 'Users Request' do
     expect(error).to have_key(:error)
     expect(error[:error]).to eq("#{error_message}")
   end
-  
+
   it "won't create a user with no request body" do
       headers = {"CONTENT_TYPE" => "application/json", "ACCEPT" => "application/json"}
       post "/api/v1/users", headers: headers

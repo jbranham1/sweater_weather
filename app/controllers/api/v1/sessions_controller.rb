@@ -2,7 +2,7 @@ class Api::V1::SessionsController < ApplicationController
   before_action :validate_params
 
   def create
-    params = JSON.parse(request.body.read, symbolize_names: :true)
+    params = JSON.parse(request.body.read, symbolize_names: true)
     user = User.find_by(email: params[:email])
 
     if user && user.authenticate(params[:password])
