@@ -12,14 +12,14 @@ class Forecast
   end
 
   def get_daily_weather(daily)
-    daily.map do |day|
+    daily.first(5).map do |day|
       DailyWeather.new(day)
-    end.first(5)
+    end
   end
 
   def get_hourly_weather(hourly)
-    hourly.map do |hour|
+    hourly.first(8).map do |hour|
       HourlyWeather.new(hour)
-    end.first(8)
+    end
   end
 end
